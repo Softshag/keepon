@@ -74,7 +74,9 @@ func onRunError(script string) {
 	runner := NewAsyncRunner(config)
 
 	err = runner.RunSync(nil)
-	log.Printf("%+v", config)
+	if err != nil {
+		log.Printf("On error script could not execute: %s", err.Error())
+	}
 }
 
 func loadConfigFromPath(path string) (RunnerConfig, error) {

@@ -109,10 +109,10 @@ func (r *Runner) Run() (chan<- bool, chan error, chan error) {
 		}
 
 		var exitCode error
-		for i := 0; int64(i) < r.Retries; i++ {
+		for i := 0; int64(i) < retries; i++ {
 			exitCode = r.run(quit, p, env)
 
-			if i < int(r.Retries-1) {
+			if i < int(retries-1) {
 				retrychan <- exitCode
 			}
 
