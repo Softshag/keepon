@@ -103,6 +103,11 @@ func (r *Runner) Run() (chan<- bool, chan error, chan error) {
 	go func() {
 		p, _ := exec.LookPath(r.Exec)
 
+		retries := r.Retries
+		if retries == 0 {
+			retries = 1
+		}
+
 		var exitCode error
 		for i := 0; int64(i) < r.Retries; i++ {
 			exitCode = r.run(quit, p, env)

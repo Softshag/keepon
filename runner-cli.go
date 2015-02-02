@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -55,14 +56,25 @@ func onRunError(script string) {
 		check(err)
 		config = _config
 	} else {
+		binary := script
+		var args []string
+		a := strings.Split(script, " ")
+
+		if len(a) > 0 {
+			binary = a[0]
+			args = a[1:]
+		}
+
 		config = RunnerConfig{
-			Exec: script,
+			Exec: binary,
+			Args: args,
 		}
 	}
+
 	runner := NewAsyncRunner(config)
 
-	runner.RunSync(nil)
-
+	err = runner.RunSync(nil)
+	log.Printf("%+v", config)
 }
 
 func loadConfigFromPath(path string) (RunnerConfig, error) {
